@@ -1,10 +1,12 @@
+"use strict";
+
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
     const password = "12345678";
-    return queryInterface.bulkInsert("Users", [
+    await queryInterface.bulkInsert("Users", [
       {
         id: uuid.v4(),
         username: "admin",
@@ -15,6 +17,12 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return CountQueuingStrategyInterface.bulkDelete("Users", null);
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
+    await queryInterface.bulkDelete("Users", null);
   },
 };
