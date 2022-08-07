@@ -16,6 +16,12 @@ module.exports = (sequelize, Sequelize) => {
       total: {
         type: Sequelize.INTEGER,
       },
+      data_product: {
+        type: Sequelize.TEXT,
+      },
+      dataUser:{
+        type: Sequelize.TEXT,
+      },
     },
     {
       timestamps: false,
