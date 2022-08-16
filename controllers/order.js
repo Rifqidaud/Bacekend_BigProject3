@@ -41,7 +41,7 @@ exports.save = async(req,res,next) => {
              user_id:req.user.id,
         }},
         console.log(dataUser)
-       
+            
         )
         
           return res.status(200).json({
@@ -61,6 +61,7 @@ exports.getorder = async(req,res,next) => {
         const order = await Order.findAll({
           where:{
               user_id:req.user.id
+              
           },
           order:[['id','desc']]
         })
@@ -87,20 +88,21 @@ exports.getorderdetail = async(req,res,next) => {
         const { id } = req.params
         const order = await Order.findOne({
           where:{
+              user_id:req.user.id,
               id:id
           },
-          include:[
-            {
-              model:OrderDetail, 
-              as:'details',
-              include:[
-                 {
-                  model:Product,
-                  as:'product'
-                 }
-              ]
-            }
-         ]
+          // include:[
+          //   {
+          //     model:OrderDetail, 
+          //     as:'details',
+          //     include:[
+          //        {
+          //         model:Product,
+          //         as:'product'
+          //        }
+          //     ]
+        //     }
+        //  ]
         })
         if(!order){
              throw new Error("Produk tidak ada")
@@ -109,7 +111,30 @@ exports.getorderdetail = async(req,res,next) => {
       status: "Success",
       code: 200,
       message: "success get data detail",
-      data: product,
+      data: order,
+    });
+  }catch(error){
+      return next(error)
+  }
+};
+exports.savepay = async(req,res,next) => {
+  try{
+        const { id } = req.params
+        const order = await Order.update(
+          {
+             status: 'dibayar'
+             
+          },
+         
+        { where:{
+             id:id,
+        }},     
+        )
+        
+    return res.status(200).json({
+      status: "Success",
+      code: 200,
+      message: "success",
     });
   }catch(error){
       return next(error)
